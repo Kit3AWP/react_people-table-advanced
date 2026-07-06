@@ -10,6 +10,8 @@ type Props = {
 export const PeopleTable = ({ people }: Props) => {
   const { slug } = useParams();
   const [searchParams] = useSearchParams();
+  const sortOrder = searchParams.get('order');
+  const sortField = searchParams.get('sort');
 
   const getSortParams = (columnName: string) => {
     const currentSort = searchParams.get('sort');
@@ -26,6 +28,14 @@ export const PeopleTable = ({ people }: Props) => {
     return { sort: null, order: null };
   };
 
+  const getSortIcon = (columnName: string) => {
+    if (sortField !== columnName) {
+      return 'fas fa-sort';
+    }
+
+    return sortOrder === 'desc' ? 'fas fa-sort-down' : 'fas fa-sort-up';
+  };
+
   return (
     <div className="block">
       <div className="box table-container">
@@ -36,19 +46,39 @@ export const PeopleTable = ({ people }: Props) => {
           <thead>
             <tr>
               <th>
-                <SearchLink params={getSortParams('name')}>Name</SearchLink>
+                Name
+                <SearchLink params={getSortParams('name')}>
+                  <span className="icon">
+                    <i className={getSortIcon('name')}></i>
+                  </span>
+                </SearchLink>
               </th>
 
               <th>
-                <SearchLink params={getSortParams('sex')}>Sex</SearchLink>
+                Sex
+                <SearchLink params={getSortParams('sex')}>
+                  <span className="icon">
+                    <i className={getSortIcon('sex')}></i>
+                  </span>
+                </SearchLink>
               </th>
 
               <th>
-                <SearchLink params={getSortParams('born')}>Born</SearchLink>
+                Born
+                <SearchLink params={getSortParams('born')}>
+                  <span className="icon">
+                    <i className={getSortIcon('born')}></i>
+                  </span>
+                </SearchLink>
               </th>
 
               <th>
-                <SearchLink params={getSortParams('died')}>Died</SearchLink>
+                Died
+                <SearchLink params={getSortParams('died')}>
+                  <span className="icon">
+                    <i className={getSortIcon('died')}></i>
+                  </span>
+                </SearchLink>
               </th>
 
               <th>Mother</th>

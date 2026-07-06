@@ -71,6 +71,14 @@ export const PeoplePage = () => {
       (personA: Person, personB: Person) => {
         const valueA = personA[sortField as keyof Person];
         const valueB = personB[sortField as keyof Person];
+
+        if (sortField === 'born' || sortField === 'died') {
+          const numA = Number(valueA);
+          const numB = Number(valueB);
+
+          return sortOrder === 'desc' ? numB - numA : numA - numB;
+        }
+
         const result = String(valueA).localeCompare(String(valueB));
 
         if (sortOrder === 'desc') {
