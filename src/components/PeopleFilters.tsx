@@ -1,4 +1,20 @@
+import { useSearchParams } from 'react-router-dom';
+import { SearchLink } from './SearchLink';
+
 export const PeopleFilters = () => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentCenturies = searchParams.getAll('centuries');
+
+  const getNewCenturies = (centuryToToggle: string) => {
+    const isAlreadySelected = currentCenturies.includes(centuryToToggle);
+
+    if (isAlreadySelected) {
+      return currentCenturies.filter(century => century !== centuryToToggle);
+    } else {
+      return [...currentCenturies, centuryToToggle];
+    }
+  };
+
   return (
     <nav className="panel">
       <p className="panel-heading">Filters</p>
@@ -22,6 +38,16 @@ export const PeopleFilters = () => {
             type="search"
             className="input"
             placeholder="Search"
+            value={searchParams.get('query') || ''}
+            onChange={event => {
+              if (event.target.value) {
+                searchParams.set('query', event.target.value);
+              } else {
+                searchParams.delete('query');
+              }
+
+              setSearchParams(searchParams);
+            }}
           />
 
           <span className="icon is-left">
@@ -33,45 +59,45 @@ export const PeopleFilters = () => {
       <div className="panel-block">
         <div className="level is-flex-grow-1 is-mobile" data-cy="CenturyFilter">
           <div className="level-left">
-            <a
+            <SearchLink
+              params={{ centuries: getNewCenturies('16') }}
               data-cy="century"
-              className="button mr-1"
-              href="#/people?centuries=16"
+              className={`button mr-1 ${currentCenturies.includes('16') ? 'is-info' : ''}`}
             >
               16
-            </a>
+            </SearchLink>
 
-            <a
+            <SearchLink
+              params={{ centuries: getNewCenturies('17') }}
               data-cy="century"
-              className="button mr-1 is-info"
-              href="#/people?centuries=17"
+              className={`button mr-1 ${currentCenturies.includes('17') ? 'is-info' : ''}`}
             >
               17
-            </a>
+            </SearchLink>
 
-            <a
+            <SearchLink
+              params={{ centuries: getNewCenturies('18') }}
               data-cy="century"
-              className="button mr-1 is-info"
-              href="#/people?centuries=18"
+              className={`button mr-1 ${currentCenturies.includes('18') ? 'is-info' : ''}`}
             >
               18
-            </a>
+            </SearchLink>
 
-            <a
+            <SearchLink
+              params={{ centuries: getNewCenturies('19') }}
               data-cy="century"
-              className="button mr-1 is-info"
-              href="#/people?centuries=19"
+              className={`button mr-1 ${currentCenturies.includes('19') ? 'is-info' : ''}`}
             >
               19
-            </a>
+            </SearchLink>
 
-            <a
+            <SearchLink
+              params={{ centuries: getNewCenturies('20') }}
               data-cy="century"
-              className="button mr-1"
-              href="#/people?centuries=20"
+              className={`button mr-1 ${currentCenturies.includes('20') ? 'is-info' : ''}`}
             >
               20
-            </a>
+            </SearchLink>
           </div>
 
           <div className="level-right ml-4">
